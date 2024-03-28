@@ -124,6 +124,10 @@ public class Logic {
                 && (row == 10 || row == 9) && (column == 9 || column == 10) && (gameField[6][10] == -4)) {
             gameField[6][10] = 4;
             gameField[row][column] = 0;
+        } else {
+            for (int i = 0; i < diceRoll; i++) {
+
+            }
         }
     }
 
