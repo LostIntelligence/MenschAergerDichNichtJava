@@ -150,6 +150,7 @@ public class Logic {
             roll3Times();
         }
         if (greenOnBoard == false && currentlyPlaying == 2) {
+            
             roll3Times();
         }
         if (blackOnBoard == false && currentlyPlaying == 3) {
