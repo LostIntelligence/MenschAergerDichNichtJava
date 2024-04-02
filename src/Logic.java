@@ -15,11 +15,13 @@ public class Logic {
     Boolean redOnBoard = false;
     Boolean blackOnBoard = false;
     int targetColumn = 0;
+    int diceRoll = 0;
+    Boolean rollNotComplete = true;
     int targetRow = 0;
     int gameField[][] = {
             { 1, 1, 0, 0, 0, 0, -2, 0, 0, 2, 2 },
-            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2 },
-            { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
+            { 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 2 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, -8, 0, 0, 0, 0, 0 },
@@ -28,8 +30,6 @@ public class Logic {
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 3, 3, 0, 0, 0, 0, 0, 0, 0, 4, 4 },
             { 3, 3, 0, 0, -3, 0, 0, 0, 0, 4, 4 } };
-    int diceRoll = 0;
-    Boolean rollNotComplete = true;
 
     public int[][] getArray() {
         return (gameField);
@@ -109,7 +109,7 @@ public class Logic {
     }
 
     public void logicYellow(int row, int column) {
-        if ((gameField[4][0] == 1 && row == 4 && column == 0)||gameField[4][0] == -1 ) {
+        if ((gameField[4][0] == 1 && row == 4 && column == 0) || gameField[4][0] == -1) {
             if ((diceRoll == 16)
                     && (gameField[0][0] == 1 || gameField[0][1] == 1 || gameField[1][0] == 1 || gameField[1][1] == 1)
                     && (row == 1 || row == 0) && (column == 0 || column == 1) && (gameField[4][0] != 1)) {
@@ -125,7 +125,7 @@ public class Logic {
     }
 
     public void logicRed(int row, int column) {
-        if ((gameField[6][10] == 4 && row == 6 && column == 10)|| gameField[6][10] == -4) {
+        if ((gameField[6][10] == 4 && row == 6 && column == 10) || gameField[6][10] == -4) {
             if ((diceRoll == 16)
                     && (gameField[10][10] == 4 || gameField[10][9] == 4 || gameField[9][10] == 4
                             || gameField[9][9] == 4)
@@ -142,7 +142,7 @@ public class Logic {
     }
 
     public void logicGreen(int row, int column) {
-        if ((gameField[0][6] == 2 && row == 0 && column == 6) ||(gameField[0][6] == -2)) {
+        if ((gameField[0][6] == 2 && row == 0 && column == 6) || (gameField[0][6] == -2)) {
             if ((diceRoll == 16)
                     && (gameField[0][10] == 2 || gameField[0][9] == 2 || gameField[1][10] == 2 || gameField[1][9] == 2)
                     && (row == 1 || row == 0) && (column == 9 || column == 10) && (gameField[0][6] != 2)) {
@@ -158,7 +158,7 @@ public class Logic {
     }
 
     public void logicBlack(int row, int column) {
-        if ((gameField[10][5] == 3 && row == 10 && column == 5) ||(gameField[10][5] == -3)) {
+        if ((gameField[10][5] == 3 && row == 10 && column == 5) || (gameField[10][5] == -3)) {
             if ((diceRoll == 16)
                     && (gameField[10][0] == 3 || gameField[10][1] == 3 || gameField[9][1] == 3 || gameField[9][0] == 3)
                     && (row == 1 || row == 0) && (column == 9 || column == 10) && (gameField[10][5] != 3)) {
@@ -178,7 +178,6 @@ public class Logic {
             roll3Times();
         }
         if (greenOnBoard == false && currentlyPlaying == 2) {
-
             roll3Times();
         }
         if (blackOnBoard == false && currentlyPlaying == 3) {
@@ -205,10 +204,10 @@ public class Logic {
     }
 
     public void cleanup() {
+        gameField[5][5] = -8;
         if (currentlyPlaying == 5) {
             currentlyPlaying = 1;
         }
-        gameField[5][5] = -8;
         if (gameField[10][4] == 0) {
             gameField[10][4] = -3;
         }

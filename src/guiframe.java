@@ -12,10 +12,11 @@ public class guiframe implements ActionListener {
     ImageIcon yellowScaled;
     ImageIcon blackScaled;
     ImageIcon greenScaled;
-    Logic lg = new Logic();
+    JFrame fr;
+    Logic Logic = new Logic();
 
     public void showGui() {
-        JFrame fr = new JFrame();
+        fr = new JFrame();
         fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         fr.setSize(800, 800);
         fr.setResizable(false);
@@ -33,6 +34,7 @@ public class guiframe implements ActionListener {
                     super.paintComponent(graphics);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    System.out.println("Board Image Scaled Failed");
                 }
             }
         };
@@ -63,13 +65,13 @@ public class guiframe implements ActionListener {
         String btn = ((Component) e.getSource()).getName();
         System.out.println("Button ID: " + btn);
         int btnValue = Integer.parseInt(btn);
-        lg.logicSelector(btnValue);
-        
+        Logic.logicSelector(btnValue);
+
         setPieces();
     }
 
     public void setPieces() {
-        int temp[][] = lg.getArray();
+        int temp[][] = Logic.getArray();
         scaleAll();
         for (int row = 0; row < 11; row++) {
             for (int column = 0; column < 11; column++) {
@@ -143,7 +145,7 @@ public class guiframe implements ActionListener {
 
         } catch (IOException e) {
             System.out.println("Image Scaled Failed");
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 }
