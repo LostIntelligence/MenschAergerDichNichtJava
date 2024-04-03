@@ -9,7 +9,8 @@ public class Logic {
      * Red 4
      */
     int carryOver = 0;
-    int currentlyPlaying = 4;
+    int currentlyPlaying = 1;
+    Boolean movePossible = true;
     Boolean yellowOnBoard = false;
     Boolean greenOnBoard = false;
     Boolean redOnBoard = false;
@@ -20,15 +21,15 @@ public class Logic {
     int targetRow = 0;
     int gameField[][] = {
             { 1, 1, 0, 0, 0, 0, -2, 0, 0, 2, 2 },
-            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2 },
+            { 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 2 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { -1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0 },
+            { -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, -8, 0, 0, 0, 0, 0 },
-            { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, -4 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 3, 3, 0, 0, 0, 0, 0, 0, 0, 4, 0 },
+            { 3, 3, 0, 0, 0, 0, 0, 0, 0, 4, 4 },
             { 3, 3, 0, 0, -3, 0, 0, 0, 0, 4, 4 } };
 
     private void fullStartingArea() {
@@ -171,7 +172,7 @@ public class Logic {
     }
 
     public void logicBlack(int row, int column) {
-        if ((gameField[10][5] == 3 && row == 10 && column == 5) || (gameField[10][5] == -3)) {
+        if ((gameField[10][4] == 3 && row == 10 && column == 4) || (gameField[10][4] == -3)) {
             if ((diceRoll == 16)
                     && (gameField[10][0] == 3 || gameField[10][1] == 3 || gameField[9][1] == 3 || gameField[9][0] == 3)
                     && (row == 1 || row == 0) && (column == 9 || column == 10) && (gameField[10][5] != 3)) {
@@ -214,6 +215,7 @@ public class Logic {
 
     public void cleanup() {
         gameField[5][5] = -8;
+        diceRoll = 0;
         if (currentlyPlaying == 5) {
             currentlyPlaying = 1;
         }
@@ -234,12 +236,9 @@ public class Logic {
     public void movePiece(int row, int column) {
         targetColumn = column;
         targetRow = row;
-        for (int i = 10; i < diceRoll; i++) {
-            if (targetColumn == 5 && targetRow == 5) {
-                JOptionPane.showMessageDialog(null, "Impossible Move", "Invalid Action",
-                        JOptionPane.ERROR_MESSAGE);
-                break;
-            } else {
+        if (diceRoll > 0) {
+            for (int i = 10; i < diceRoll; i++) {
+
                 if ((targetRow == 4 && targetColumn != 4 && targetColumn != 10)
                         || (targetRow == 0 && (targetColumn == 4 || targetColumn == 5))
                         || (targetRow == 5 && targetColumn < 5 && currentlyPlaying == 1)) {
@@ -257,22 +256,30 @@ public class Logic {
                         || (targetColumn == 5 && targetRow < 5 && currentlyPlaying == 4)) {
                     targetRow++;
                 }
+                if (targetColumn == 5 && targetRow == 5) {
+                    JOptionPane.showMessageDialog(null, "Impossible Move", "Invalid Action",
+                            JOptionPane.ERROR_MESSAGE);
+                    movePossible = false;
+                    break;
+                }
 
             }
-        }
-        if (gameField[targetRow][targetColumn] != currentlyPlaying) {
-            if (gameField[targetRow][targetColumn] > 0) {
-                returnCapturedPieces(targetRow, targetColumn);
+            if (gameField[targetRow][targetColumn] != currentlyPlaying && movePossible == true) {
+                if (gameField[targetRow][targetColumn] > 0) {
+                    returnCapturedPieces(targetRow, targetColumn);
+                }
+                gameField[targetRow][targetColumn] = currentlyPlaying;
+                gameField[row][column] = 0;
+                currentlyPlaying++;
+            } else if (movePossible == true) {
+                JOptionPane.showMessageDialog(null, "Field already has your own Pawn", "Invalid Action",
+                        JOptionPane.ERROR_MESSAGE);
+
             }
-            gameField[targetRow][targetColumn] = currentlyPlaying;
-            gameField[row][column] = 0;
-            currentlyPlaying++;
+            movePossible = true;
         } else {
-            JOptionPane.showMessageDialog(null, "Field already has your own Pawn", "Invalid Action",
-                    JOptionPane.ERROR_MESSAGE);
-
+            JOptionPane.showMessageDialog(null, "Please Roll the dice first");
         }
-
     }
 
     public void returnCapturedPieces(int row, int column) {
@@ -328,8 +335,19 @@ public class Logic {
         }
     }
 
-    public Boolean checkWin() {
-        return true;
+    public void checkWin() {
+        if (gameField[5][1] == 1 && gameField[5][2] == 1 && gameField[5][3] == 1 && gameField[5][4] == 1) {
+            JOptionPane.showMessageDialog(null, "The Winner is player 1 (Yellow) ", "Game Win",
+                    JOptionPane.PLAIN_MESSAGE);
+        } else if (gameField[1][5] == 2 && gameField[2][5] == 2 && gameField[3][5] == 2 && gameField[4][5] == 2) {
+            JOptionPane.showMessageDialog(null, "The Winner is player 2 (Green)", "Game Win",
+                    JOptionPane.PLAIN_MESSAGE);
+        } else if (gameField[5][9] == 4 && gameField[5][8] == 4 && gameField[5][7] == 4 && gameField[5][6] == 4) {
+            JOptionPane.showMessageDialog(null, "The Winner is player 4 (Red)", "Game Win",
+                    JOptionPane.PLAIN_MESSAGE);
+        } else if (gameField[9][5] == 3 && gameField[8][5] == 3 && gameField[7][5] == 3 && gameField[6][5] == 3) {
+            JOptionPane.showMessageDialog(null, "The Winner is player 3 (Black)", "Game Win",0);
+        }
     }
 
 }

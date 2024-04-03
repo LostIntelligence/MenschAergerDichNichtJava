@@ -4,6 +4,7 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+
 public class guiframe implements ActionListener {
     JPanel game;
     JButton[][] fieldButtons;
@@ -68,6 +69,7 @@ public class guiframe implements ActionListener {
         int btnValue = Integer.parseInt(btn);
         Logic.logicSelector(btnValue);
         setPieces();
+        Logic.checkWin();
     }
 
     public void setPieces() {
