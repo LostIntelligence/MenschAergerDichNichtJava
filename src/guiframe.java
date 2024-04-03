@@ -14,6 +14,7 @@ public class guiframe implements ActionListener {
     ImageIcon greenScaled;
     JFrame fr;
     Logic Logic = new Logic();
+    Color[] colors = { Color.YELLOW, Color.GREEN, Color.BLACK, Color.RED };
 
     public void showGui() {
         fr = new JFrame();
@@ -48,17 +49,17 @@ public class guiframe implements ActionListener {
             for (int column = 0; column < 11; column++) {
                 fieldButtons[row][column] = new JButton();
                 fieldButtons[row][column].setContentAreaFilled(false);
-                fieldButtons[row][column].setBorderPainted(true);
+                fieldButtons[row][column].setBorderPainted(false);
                 fieldButtons[row][column].setName(Integer.toString(column * 100 + row));
                 fieldButtons[row][column].addActionListener(this);
                 game.add(fieldButtons[row][column]);
-
             }
         }
+        fieldButtons[0][2].setText("Now");
+        fieldButtons[0][2].setOpaque(true);
         fr.getContentPane().add(game);
         fr.setVisible(true);
         setPieces();
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -66,15 +67,16 @@ public class guiframe implements ActionListener {
         System.out.println("Button ID: " + btn);
         int btnValue = Integer.parseInt(btn);
         Logic.logicSelector(btnValue);
-
         setPieces();
     }
 
     public void setPieces() {
+        int carry = Logic.getCurrentPlayer();
+        fieldButtons[0][2].setBackground(colors[carry - 1]);
         int temp[][] = Logic.getArray();
         scaleAll();
         for (int row = 0; row < 11; row++) {
-            for (int column = 0; column < 11; column++) {
+             for (int column = 0; column < 11; column++) {
                 int currentValue = temp[row][column];
                 switch (currentValue) {
                     case 1:
@@ -128,7 +130,7 @@ public class guiframe implements ActionListener {
                     fieldButtons[0][0].getWidth(), fieldButtons[0][0].getHeight(), Image.SCALE_DEFAULT));
             blackScaled = new ImageIcon(ImageIO.read(new File("black.png")).getScaledInstance(
                     fieldButtons[0][0].getWidth(), fieldButtons[0][0].getHeight(), Image.SCALE_DEFAULT));
-            diceIcons[0] = new ImageIcon(ImageIO.read(new File("X.png")).getScaledInstance(
+            diceIcons[0] = new ImageIcon(ImageIO.read(new File("none.png")).getScaledInstance(
                     fieldButtons[0][0].getWidth(), fieldButtons[0][0].getHeight(), Image.SCALE_DEFAULT));
             diceIcons[1] = new ImageIcon(ImageIO.read(new File("D6-1.png")).getScaledInstance(
                     fieldButtons[0][0].getWidth(), fieldButtons[0][0].getHeight(), Image.SCALE_DEFAULT));

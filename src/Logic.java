@@ -9,7 +9,7 @@ public class Logic {
      * Red 4
      */
     int carryOver = 0;
-    int currentlyPlaying = 1;
+    int currentlyPlaying = 4;
     Boolean yellowOnBoard = false;
     Boolean greenOnBoard = false;
     Boolean redOnBoard = false;
@@ -20,16 +20,25 @@ public class Logic {
     int targetRow = 0;
     int gameField[][] = {
             { 1, 1, 0, 0, 0, 0, -2, 0, 0, 2, 2 },
-            { 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 2 },
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { -1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0 },
             { 0, 0, 0, 0, 0, -8, 0, 0, 0, 0, 0 },
-            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4 },
+            { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, -4 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-            { 3, 3, 0, 0, 0, 0, 0, 0, 0, 4, 4 },
+            { 3, 3, 0, 0, 0, 0, 0, 0, 0, 4, 0 },
             { 3, 3, 0, 0, -3, 0, 0, 0, 0, 4, 4 } };
+
+    private void fullStartingArea() {
+        JOptionPane.showMessageDialog(null, "Please clear your starting area", "Invalid Action",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public int getCurrentPlayer() {
+        return currentlyPlaying;
+    }
 
     public int[][] getArray() {
         return (gameField);
@@ -51,31 +60,37 @@ public class Logic {
         int row = btnname % 100;
         int column = btnname / 100;
         int piece = gameField[row][column];
-        checkBoard();
-        switch (piece) {
-            case 1:
-                logicYellow(row, column);
-                cleanup();
-                break;
-            case 2:
-                logicGreen(row, column);
-                cleanup();
-                break;
-            case 3:
-                logicBlack(row, column);
-                cleanup();
-                break;
-            case 4:
-                logicRed(row, column);
-                cleanup();
-                break;
-            case -8:
-                rollDice();
-                checkBoard();
-                rollThriceCheck();
-                break;
-            default:
-                break;
+        if (piece > 0 && piece != currentlyPlaying) {
+            JOptionPane.showMessageDialog(null, "Its not your Turn", "Invalid Action",
+                    JOptionPane.WARNING_MESSAGE);
+
+        } else {
+            checkBoard();
+            switch (piece) {
+                case 1:
+                    logicYellow(row, column);
+                    cleanup();
+                    break;
+                case 2:
+                    logicGreen(row, column);
+                    cleanup();
+                    break;
+                case 3:
+                    logicBlack(row, column);
+                    cleanup();
+                    break;
+                case 4:
+                    logicRed(row, column);
+                    cleanup();
+                    break;
+                case -8:
+                    rollDice();
+                    checkBoard();
+                    rollThriceCheck();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -106,6 +121,7 @@ public class Logic {
                 }
             }
         }
+
     }
 
     public void logicYellow(int row, int column) {
@@ -119,8 +135,7 @@ public class Logic {
                 movePiece(row, column);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Please clear your starting area", "Invalid Action",
-                    JOptionPane.INFORMATION_MESSAGE);
+            fullStartingArea();
         }
     }
 
@@ -136,8 +151,7 @@ public class Logic {
                 movePiece(row, column);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Please clear your starting area", "Invalid Action",
-                    JOptionPane.INFORMATION_MESSAGE);
+            fullStartingArea();
         }
     }
 
@@ -152,8 +166,7 @@ public class Logic {
                 movePiece(row, column);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Please clear your starting area", "Invalid Action",
-                    JOptionPane.INFORMATION_MESSAGE);
+            fullStartingArea();
         }
     }
 
@@ -168,22 +181,18 @@ public class Logic {
                 movePiece(row, column);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Please clear your starting area", "Invalid Action",
-                    JOptionPane.INFORMATION_MESSAGE);
+            fullStartingArea();
         }
     }
 
     public void rollThriceCheck() {
         if (yellowOnBoard == false && currentlyPlaying == 1) {
             roll3Times();
-        }
-        if (greenOnBoard == false && currentlyPlaying == 2) {
+        } else if (greenOnBoard == false && currentlyPlaying == 2) {
             roll3Times();
-        }
-        if (blackOnBoard == false && currentlyPlaying == 3) {
+        } else if (blackOnBoard == false && currentlyPlaying == 3) {
             roll3Times();
-        }
-        if (redOnBoard == false && currentlyPlaying == 4) {
+        } else if (redOnBoard == false && currentlyPlaying == 4) {
             roll3Times();
         }
     }
@@ -226,31 +235,42 @@ public class Logic {
         targetColumn = column;
         targetRow = row;
         for (int i = 10; i < diceRoll; i++) {
-            if ((targetRow == 4 && targetColumn != 4 && targetColumn != 10)
-                    || (targetRow == 0 && (targetColumn == 4 || targetColumn == 5))) {
-                targetColumn++;
-            } else if ((targetRow == 6 && targetColumn != 6 && targetColumn != 0)
-                    || (targetRow == 10 && (targetColumn == 6 || targetColumn == 5))) {
-                targetColumn--;
-            } else if ((targetColumn == 4 && targetRow != 0 && targetRow != 6)
-                    || (targetColumn == 0 && (targetRow == 6 || targetRow == 5))) {
-                targetRow--;
-            } else if ((targetColumn == 6 && targetRow != 4 && targetRow != 10)
-                    || (targetColumn == 10 && (targetRow == 4 || targetRow == 5))) {
-                targetRow++;
-            }
+            if (targetColumn == 5 && targetRow == 5) {
+                JOptionPane.showMessageDialog(null, "Impossible Move", "Invalid Action",
+                        JOptionPane.ERROR_MESSAGE);
+                break;
+            } else {
+                if ((targetRow == 4 && targetColumn != 4 && targetColumn != 10)
+                        || (targetRow == 0 && (targetColumn == 4 || targetColumn == 5))
+                        || (targetRow == 5 && targetColumn < 5 && currentlyPlaying == 1)) {
+                    targetColumn++;
+                } else if ((targetRow == 6 && targetColumn != 6 && targetColumn != 0)
+                        || (targetRow == 10 && (targetColumn == 6 || targetColumn == 5))
+                        || (targetRow == 5 && targetColumn > 5 && currentlyPlaying == 4)) {
+                    targetColumn--;
+                } else if ((targetColumn == 4 && targetRow != 0 && targetRow != 6)
+                        || (targetColumn == 0 && (targetRow == 6 || targetRow == 5))
+                        || (targetRow == 5 && targetColumn > 5 && currentlyPlaying == 3)) {
+                    targetRow--;
+                } else if ((targetColumn == 6 && targetRow != 4 && targetRow != 10)
+                        || (targetColumn == 10 && (targetRow == 4 || targetRow == 5))
+                        || (targetColumn == 5 && targetRow < 5 && currentlyPlaying == 4)) {
+                    targetRow++;
+                }
 
+            }
         }
         if (gameField[targetRow][targetColumn] != currentlyPlaying) {
             if (gameField[targetRow][targetColumn] > 0) {
                 returnCapturedPieces(targetRow, targetColumn);
             }
-            gameField[targetRow][targetColumn] = 1;
+            gameField[targetRow][targetColumn] = currentlyPlaying;
             gameField[row][column] = 0;
             currentlyPlaying++;
         } else {
             JOptionPane.showMessageDialog(null, "Field already has your own Pawn", "Invalid Action",
                     JOptionPane.ERROR_MESSAGE);
+
         }
 
     }
@@ -307,4 +327,9 @@ public class Logic {
                 break;
         }
     }
+
+    public Boolean checkWin() {
+        return true;
+    }
+
 }
