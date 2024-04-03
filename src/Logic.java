@@ -346,7 +346,8 @@ public class Logic {
             JOptionPane.showMessageDialog(null, "The Winner is player 4 (Red)", "Game Win",
                     JOptionPane.PLAIN_MESSAGE);
         } else if (gameField[9][5] == 3 && gameField[8][5] == 3 && gameField[7][5] == 3 && gameField[6][5] == 3) {
-            JOptionPane.showMessageDialog(null, "The Winner is player 3 (Black)", "Game Win",0);
+            JOptionPane.showMessageDialog(null, "The Winner is player 3 (Black)", "Game Win",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }
 

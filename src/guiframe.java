@@ -60,6 +60,7 @@ public class guiframe implements ActionListener {
         fieldButtons[0][2].setOpaque(true);
         fr.getContentPane().add(game);
         fr.setVisible(true);
+        JOptionPane.showMessageDialog(null, "Hello", "How to Play", JOptionPane.INFORMATION_MESSAGE);
         setPieces();
     }
 
