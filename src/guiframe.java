@@ -13,15 +13,15 @@ public class guiframe implements ActionListener {
     ImageIcon yellowScaled;
     ImageIcon blackScaled;
     ImageIcon greenScaled;
-    JFrame fr;
+    JFrame frame;
     Logic Logic = new Logic();
     Color[] colors = { Color.YELLOW, Color.GREEN, Color.BLACK, Color.RED };
 
     public void showGui() {
-        fr = new JFrame();
-        fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        fr.setSize(800, 800);
-        fr.setResizable(false);
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 800);
+        frame.setResizable(false);
         game = new JPanel() {
             // instance initializer
             {
@@ -59,9 +59,9 @@ public class guiframe implements ActionListener {
         fieldButtons[0][2].setText("Now");
         fieldButtons[0][2].setBorderPainted(true);
         fieldButtons[0][2].setOpaque(true);
-        fr.getContentPane().add(game);
-        fr.setVisible(true);
-        JOptionPane.showMessageDialog(fr, String.format("Hello welcome to the game, %n To roll the dice press the red X in the middle of the board. %n A colured Tile on the top left indicates whos turn it is"), "How to Play", JOptionPane.INFORMATION_MESSAGE);
+        frame.getContentPane().add(game);
+        frame.setVisible(true);
+        JOptionPane.showMessageDialog(frame, String.format("Hello welcome to the game, %n To roll the dice press the red X in the middle of the board. %n A colured Tile on the top left indicates whos turn it is"), "How to Play", JOptionPane.INFORMATION_MESSAGE);
         setPieces();
     }
 
@@ -154,4 +154,6 @@ public class guiframe implements ActionListener {
             e.printStackTrace();
         }
     }
+
+   
 }

@@ -54,6 +54,7 @@ public class Logic {
             }
         }
         rollNotComplete = true;
+        System.out.println("Dice Roll: " + diceRoll);
         diceRoll = diceRoll + 10;
         gameField[5][5] = diceRoll;
     }
@@ -190,8 +191,8 @@ public class Logic {
         if ((gameField[10][4] == 3 && row == 10 && column == 4) || (gameField[10][4] == -3)) {
             if ((diceRoll == 16)
                     && (gameField[10][0] == 3 || gameField[10][1] == 3 || gameField[9][1] == 3 || gameField[9][0] == 3)
-                    && (row == 1 || row == 0) && (column == 9 || column == 10) && (gameField[10][4] != 3)) {
-                gameField[10][5] = 2;
+                    && (row == 10 || row == 9) && (column == 0 || column == 1) && (gameField[10][4] != 3)) {
+                gameField[10][4] = 3;
                 gameField[row][column] = 0;
             } else {
                 movePiece(row, column);
@@ -418,7 +419,7 @@ public class Logic {
                         if ((diceRoll == 16)
                                 && (gameField[10][0] == 3 || gameField[10][1] == 3 || gameField[9][1] == 3
                                         || gameField[9][0] == 3)
-                                && (currentlyPlaying == 3) && (gameField[10][5] != 3)) {
+                                && (currentlyPlaying == 3) && (gameField[10][4] != 3)) {
                             isMovePossible = true;
                         }
                         if ((diceRoll == 16)
