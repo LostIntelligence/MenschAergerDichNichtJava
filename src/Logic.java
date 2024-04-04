@@ -1,4 +1,7 @@
-import javax.swing.JOptionPane;
+import java.awt.*;
+import java.io.*;
+import javax.imageio.*;
+import javax.swing.*;
 
 public class Logic {
     /*
@@ -294,7 +297,8 @@ public class Logic {
             }
             isValidMove = true;
         } else {
-            JOptionPane.showMessageDialog(guiframe.frame, "Please Roll the dice first");
+            JOptionPane.showMessageDialog(guiframe.frame, "Please Roll the dice first", "No Dice roll",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -352,19 +356,29 @@ public class Logic {
     }
 
     public void checkWin() {
-        if (gameField[5][1] == 1 && gameField[5][2] == 1 && gameField[5][3] == 1 && gameField[5][4] == 1) {
-            JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 1 (Yellow) ", "Game Win",
-                    JOptionPane.PLAIN_MESSAGE);
-        } else if (gameField[1][5] == 2 && gameField[2][5] == 2 && gameField[3][5] == 2 && gameField[4][5] == 2) {
-            JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 2 (Green)", "Game Win",
-                    JOptionPane.PLAIN_MESSAGE);
-        } else if (gameField[5][9] == 4 && gameField[5][8] == 4 && gameField[5][7] == 4 && gameField[5][6] == 4) {
-            JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 4 (Red)", "Game Win",
-                    JOptionPane.PLAIN_MESSAGE);
-        } else if (gameField[9][5] == 3 && gameField[8][5] == 3 && gameField[7][5] == 3 && gameField[6][5] == 3) {
-            JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 3 (Black)", "Game Win",
-                    JOptionPane.PLAIN_MESSAGE);
+        ImageIcon victoryImage;
+        try {
+            victoryImage = new ImageIcon(ImageIO.read(new File("trophy.png")).getScaledInstance(
+                    guiframe.fieldButtons[0][0].getWidth(), guiframe.fieldButtons[0][0].getHeight(),
+                    Image.SCALE_DEFAULT));
+            if (gameField[5][1] == 1 && gameField[5][2] == 1 && gameField[5][3] == 1 && gameField[5][4] == 1) {
+                JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 1 (Yellow) ", "Game Win",
+                        0, victoryImage);
+            } else if (gameField[1][5] == 2 && gameField[2][5] == 2 && gameField[3][5] == 2 && gameField[4][5] == 2) {
+                JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 2 (Green)", "Game Win",
+                        0, victoryImage);
+            } else if (gameField[5][9] == 4 && gameField[5][8] == 4 && gameField[5][7] == 4 && gameField[5][6] == 4) {
+                JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 4 (Red)", "Game Win",
+                        0, victoryImage);
+            } else if (gameField[9][5] == 3 && gameField[8][5] == 3 && gameField[7][5] == 3 && gameField[6][5] == 3) {
+                JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 3 (Black)", "Game Win",
+                        0, victoryImage);
+            }
+        } catch (Exception e) {
+            System.out.println("Victory Image Scale Failed");
+            e.printStackTrace();
         }
+
     }
 
     public void isMovePossible() {
