@@ -10,7 +10,8 @@ public class Logic {
      */
     int carryOver = 0;
     int currentlyPlaying = 1;
-    Boolean movePossible = true;
+    boolean isMovePossible = false;
+    Boolean isValidMove = true;
     Boolean yellowOnBoard = false;
     Boolean greenOnBoard = false;
     Boolean redOnBoard = false;
@@ -32,17 +33,17 @@ public class Logic {
             { 3, 3, 0, 0, 0, 0, 0, 0, 0, 4, 4 },
             { 3, 3, 0, 0, -3, 0, 0, 0, 0, 4, 4 } };
 
-    private void fullStartingArea() {
-        JOptionPane.showMessageDialog(null, "Please clear your starting area", "Invalid Action",
-                JOptionPane.INFORMATION_MESSAGE);
-    }
-
     public int getCurrentPlayer() {
         return currentlyPlaying;
     }
 
     public int[][] getArray() {
         return (gameField);
+    }
+
+    private void fullStartingArea() {
+        JOptionPane.showMessageDialog(null, "Please clear your starting area", "Invalid Action",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     public void rollDice() {
@@ -57,7 +58,11 @@ public class Logic {
         gameField[5][5] = diceRoll;
     }
 
+    // TODO Improvements
+    ///// Multi class split ??
+
     public void logicSelector(int btnname) {
+
         int row = btnname % 100;
         int column = btnname / 100;
         int piece = gameField[row][column];
@@ -88,6 +93,16 @@ public class Logic {
                     rollDice();
                     checkBoard();
                     rollThriceCheck();
+                    isMovePossible();
+                    if (isMovePossible == false) {
+
+                        diceRoll = diceRoll - 10;
+                        String message = "No Valid Move For Dice Roll " + Integer.toString(diceRoll);
+                        JOptionPane.showMessageDialog(
+                                null, message, "No Valid Move",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        cleanup();
+                    }
                     break;
                 default:
                     break;
@@ -199,17 +214,17 @@ public class Logic {
     }
 
     public void roll3Times() {
-        if (carryOver < 3) {
+        if (carryOver < 2) {
             if (diceRoll == 16) {
                 carryOver = 0;
             } else {
                 carryOver++;
-                cleanup();
+
             }
         } else {
             carryOver = 0;
             currentlyPlaying++;
-            cleanup();
+
         }
     }
 
@@ -259,24 +274,24 @@ public class Logic {
                 if (targetColumn == 5 && targetRow == 5) {
                     JOptionPane.showMessageDialog(null, "Impossible Move", "Invalid Action",
                             JOptionPane.ERROR_MESSAGE);
-                    movePossible = false;
+                    isValidMove = false;
                     break;
                 }
 
             }
-            if (gameField[targetRow][targetColumn] != currentlyPlaying && movePossible == true) {
+            if (gameField[targetRow][targetColumn] != currentlyPlaying && isValidMove == true) {
                 if (gameField[targetRow][targetColumn] > 0) {
                     returnCapturedPieces(targetRow, targetColumn);
                 }
                 gameField[targetRow][targetColumn] = currentlyPlaying;
                 gameField[row][column] = 0;
                 currentlyPlaying++;
-            } else if (movePossible == true) {
+            } else if (isValidMove == true) {
                 JOptionPane.showMessageDialog(null, "Field already has your own Pawn", "Invalid Action",
                         JOptionPane.ERROR_MESSAGE);
 
             }
-            movePossible = true;
+            isValidMove = true;
         } else {
             JOptionPane.showMessageDialog(null, "Please Roll the dice first");
         }
@@ -351,4 +366,71 @@ public class Logic {
         }
     }
 
+    public void isMovePossible() {
+        isMovePossible = false;
+        for (int row = 0; row < 11; row++) {
+            for (int column = 0; column < 11; column++) {
+                if (gameField[row][column] == currentlyPlaying) {
+                    targetColumn = column;
+                    targetRow = row;
+                    if (diceRoll > 0) {
+                        for (int i = 10; i < diceRoll; i++) {
+
+                            if ((targetRow == 4 && targetColumn != 4 && targetColumn != 10)
+                                    || (targetRow == 0 && (targetColumn == 4 || targetColumn == 5))
+                                    || (targetRow == 5 && targetColumn < 5 && currentlyPlaying == 1)) {
+                                targetColumn++;
+                            } else if ((targetRow == 6 && targetColumn != 6 && targetColumn != 0)
+                                    || (targetRow == 10 && (targetColumn == 6 || targetColumn == 5))
+                                    || (targetRow == 5 && targetColumn > 5 && currentlyPlaying == 4)) {
+                                targetColumn--;
+                            } else if ((targetColumn == 4 && targetRow != 0 && targetRow != 6)
+                                    || (targetColumn == 0 && (targetRow == 6 || targetRow == 5))
+                                    || (targetRow == 5 && targetColumn > 5 && currentlyPlaying == 3)) {
+                                targetRow--;
+                            } else if ((targetColumn == 6 && targetRow != 4 && targetRow != 10)
+                                    || (targetColumn == 10 && (targetRow == 4 || targetRow == 5))
+                                    || (targetColumn == 5 && targetRow < 5 && currentlyPlaying == 4)) {
+                                targetRow++;
+                            }
+                            if (targetColumn == 5 && targetRow == 5) {
+                                isValidMove = false;
+                                break;
+                            }
+
+                        }
+                        if (gameField[targetRow][targetColumn] != currentlyPlaying && isValidMove == true) {
+                            isMovePossible = true;
+                        }
+                        if ((diceRoll == 16)
+                                && (gameField[0][0] == 1 || gameField[0][1] == 1 || gameField[1][0] == 1
+                                        || gameField[1][1] == 1)
+                                && (currentlyPlaying == 1) && (gameField[4][0] != 1)) {
+                            isMovePossible = true;
+                        }
+                        if ((diceRoll == 16)
+                                && (gameField[0][10] == 2 || gameField[0][9] == 2 || gameField[1][10] == 2
+                                        || gameField[1][9] == 2)
+                                && (currentlyPlaying == 2) && (gameField[0][6] != 2)) {
+                            isMovePossible = true;
+                        }
+
+                        if ((diceRoll == 16)
+                                && (gameField[10][0] == 3 || gameField[10][1] == 3 || gameField[9][1] == 3
+                                        || gameField[9][0] == 3)
+                                && (currentlyPlaying == 3) && (gameField[10][5] != 3)) {
+                            isMovePossible = true;
+                        }
+                        if ((diceRoll == 16)
+                                && (gameField[10][10] == 4 || gameField[10][9] == 4 || gameField[9][10] == 4
+                                        || gameField[9][9] == 4)
+                                && (currentlyPlaying == 4) && (gameField[6][10] != 4)) {
+                            isMovePossible = true;
+                        }
+                        isValidMove = true;
+                    }
+                }
+            }
+        }
+    }
 }

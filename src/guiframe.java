@@ -57,10 +57,11 @@ public class guiframe implements ActionListener {
             }
         }
         fieldButtons[0][2].setText("Now");
+        fieldButtons[0][2].setBorderPainted(true);
         fieldButtons[0][2].setOpaque(true);
         fr.getContentPane().add(game);
         fr.setVisible(true);
-        JOptionPane.showMessageDialog(null, "Hello", "How to Play", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(fr, String.format("Hello welcome to the game, %n To roll the dice press the red X in the middle of the board. %n A colured Tile on the top left indicates whos turn it is"), "How to Play", JOptionPane.INFORMATION_MESSAGE);
         setPieces();
     }
 
