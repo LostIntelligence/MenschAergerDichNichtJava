@@ -42,7 +42,7 @@ public class Logic {
     }
 
     private void fullStartingArea() {
-        JOptionPane.showMessageDialog(null, "Please clear your starting area", "Invalid Action",
+        JOptionPane.showMessageDialog(guiframe.frame, "Please clear your starting area", "Invalid Action",
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -68,7 +68,7 @@ public class Logic {
         int column = btnname / 100;
         int piece = gameField[row][column];
         if (piece > 0 && piece != currentlyPlaying) {
-            JOptionPane.showMessageDialog(null, "Its not your Turn", "Invalid Action",
+            JOptionPane.showMessageDialog(guiframe.frame, "Its not your Turn", "Invalid Action",
                     JOptionPane.WARNING_MESSAGE);
 
         } else {
@@ -100,7 +100,7 @@ public class Logic {
                         diceRoll = diceRoll - 10;
                         String message = "No Valid Move For Dice Roll " + Integer.toString(diceRoll);
                         JOptionPane.showMessageDialog(
-                                null, message, "No Valid Move",
+                                guiframe.frame, message, "No Valid Move",
                                 JOptionPane.INFORMATION_MESSAGE);
                         cleanup();
                     }
@@ -273,7 +273,7 @@ public class Logic {
                     targetRow++;
                 }
                 if (targetColumn == 5 && targetRow == 5) {
-                    JOptionPane.showMessageDialog(null, "Impossible Move", "Invalid Action",
+                    JOptionPane.showMessageDialog(guiframe.frame, "Impossible Move", "Invalid Action",
                             JOptionPane.ERROR_MESSAGE);
                     isValidMove = false;
                     break;
@@ -288,13 +288,13 @@ public class Logic {
                 gameField[row][column] = 0;
                 currentlyPlaying++;
             } else if (isValidMove == true) {
-                JOptionPane.showMessageDialog(null, "Field already has your own Pawn", "Invalid Action",
+                JOptionPane.showMessageDialog(guiframe.frame, "Field already has your own Pawn", "Invalid Action",
                         JOptionPane.ERROR_MESSAGE);
 
             }
             isValidMove = true;
         } else {
-            JOptionPane.showMessageDialog(null, "Please Roll the dice first");
+            JOptionPane.showMessageDialog(guiframe.frame, "Please Roll the dice first");
         }
     }
 
@@ -353,16 +353,16 @@ public class Logic {
 
     public void checkWin() {
         if (gameField[5][1] == 1 && gameField[5][2] == 1 && gameField[5][3] == 1 && gameField[5][4] == 1) {
-            JOptionPane.showMessageDialog(null, "The Winner is player 1 (Yellow) ", "Game Win",
+            JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 1 (Yellow) ", "Game Win",
                     JOptionPane.PLAIN_MESSAGE);
         } else if (gameField[1][5] == 2 && gameField[2][5] == 2 && gameField[3][5] == 2 && gameField[4][5] == 2) {
-            JOptionPane.showMessageDialog(null, "The Winner is player 2 (Green)", "Game Win",
+            JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 2 (Green)", "Game Win",
                     JOptionPane.PLAIN_MESSAGE);
         } else if (gameField[5][9] == 4 && gameField[5][8] == 4 && gameField[5][7] == 4 && gameField[5][6] == 4) {
-            JOptionPane.showMessageDialog(null, "The Winner is player 4 (Red)", "Game Win",
+            JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 4 (Red)", "Game Win",
                     JOptionPane.PLAIN_MESSAGE);
         } else if (gameField[9][5] == 3 && gameField[8][5] == 3 && gameField[7][5] == 3 && gameField[6][5] == 3) {
-            JOptionPane.showMessageDialog(null, "The Winner is player 3 (Black)", "Game Win",
+            JOptionPane.showMessageDialog(guiframe.frame, "The Winner is player 3 (Black)", "Game Win",
                     JOptionPane.PLAIN_MESSAGE);
         }
     }

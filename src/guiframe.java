@@ -13,7 +13,7 @@ public class guiframe implements ActionListener {
     ImageIcon yellowScaled;
     ImageIcon blackScaled;
     ImageIcon greenScaled;
-    JFrame frame;
+   static JFrame frame;
     Logic Logic = new Logic();
     Color[] colors = { Color.YELLOW, Color.GREEN, Color.BLACK, Color.RED };
 
