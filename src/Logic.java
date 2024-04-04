@@ -241,8 +241,8 @@ public class Logic {
         if (gameField[0][6] == 0) {
             gameField[0][6] = -2;
         }
-        if (gameField[4][10] == 0) {
-            gameField[4][10] = -3;
+        if (gameField[6][10] == 0) {
+            gameField[6][10] = -4;
         }
         if (gameField[4][0] == 0) {
             gameField[4][0] = -1;

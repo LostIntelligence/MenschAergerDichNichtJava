@@ -50,7 +50,7 @@ public class guiframe implements ActionListener {
             for (int column = 0; column < 11; column++) {
                 fieldButtons[row][column] = new JButton();
                 fieldButtons[row][column].setContentAreaFilled(false);
-                fieldButtons[row][column].setBorderPainted(false);
+                fieldButtons[row][column].setBorderPainted(true);
                 fieldButtons[row][column].setName(Integer.toString(column * 100 + row));
                 fieldButtons[row][column].addActionListener(this);
                 game.add(fieldButtons[row][column]);
