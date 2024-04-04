@@ -190,7 +190,7 @@ public class Logic {
         if ((gameField[10][4] == 3 && row == 10 && column == 4) || (gameField[10][4] == -3)) {
             if ((diceRoll == 16)
                     && (gameField[10][0] == 3 || gameField[10][1] == 3 || gameField[9][1] == 3 || gameField[9][0] == 3)
-                    && (row == 1 || row == 0) && (column == 9 || column == 10) && (gameField[10][5] != 3)) {
+                    && (row == 1 || row == 0) && (column == 9 || column == 10) && (gameField[10][4] != 3)) {
                 gameField[10][5] = 2;
                 gameField[row][column] = 0;
             } else {
