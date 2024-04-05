@@ -95,7 +95,7 @@ public class guiframe implements ActionListener {
                     case 4:
                         fieldButtons[row][column].setIcon(redScaled);
                         break;
-                    case -8:
+                    case 8:
                         fieldButtons[row][column].setIcon(diceIcons[0]);
                         break;
                     case 11:
